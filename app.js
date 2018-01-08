@@ -2,9 +2,17 @@ var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser');
 
-var db = mongoose.connect('mongodb://localhost/libraryApp', {
-    useMongoClient: true
-});
+var db;
+
+if (process.env.ENV == 'Test') {
+    db = mongoose.connect('mongodb://localhost/libraryApp_test', {
+        useMongoClient: true
+    });
+} else {
+    db = mongoose.connect('mongodb://localhost/libraryApp', {
+        useMongoClient: true
+    });
+}
 
 var Book = require('./models/bookModel');
 
@@ -27,3 +35,5 @@ app.get('/', function (req, res) {
 app.listen(port, function () {
     console.log('Running on PORT: ' + port);
 });
+
+module.exports = app;
